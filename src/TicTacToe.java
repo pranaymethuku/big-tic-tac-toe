@@ -129,7 +129,6 @@ public class TicTacToe {
 	}
 
 	private boolean isAnyDiagonalSame() {
-		// TODO: Fix this method. isRightDiagonalSame not working
 		return this.isLeftDiagonalSame() || this.isRightDiagonalSame();
 	}
 
