@@ -1,16 +1,40 @@
 import java.util.Scanner;
 
+/**
+ * @author Pranay Methuku
+ *
+ */
 public class TicTacToe {
 
+	/**
+	 * 
+	 */
 	private int gridSize;
+	/**
+	 * 
+	 */
 	private boolean isInputBoxWise;
+	/**
+	 * 
+	 */
 	private static final int DEFAULT_GRID_SIZE = 3;
+	/**
+	 * 
+	 */
 	private Player currentPlayer;
 
+	/**
+	 * @author Pranay Methuku
+	 *
+	 */
 	private enum Player {
 		X, O;
 	}
 
+	/**
+	 * @author Pranay Methuku
+	 *
+	 */
 	private class Coord2D {
 		private int row;
 		private int column;
@@ -52,22 +76,37 @@ public class TicTacToe {
 
 	}
 
+	/**
+	 * 
+	 */
 	private Player[][] grid;
 
+	/**
+	 * @param gridSize
+	 */
 	private void initNewGame(int gridSize) {
 		this.grid = new Player[gridSize][gridSize];
 		this.gridSize = gridSize;
 		this.currentPlayer = Player.X;
 	}
 
+	/**
+	 * 
+	 */
 	public TicTacToe() {
 		initNewGame(DEFAULT_GRID_SIZE);
 	}
 
+	/**
+	 * @param gridSize
+	 */
 	public TicTacToe(int gridSize) {
 		initNewGame(gridSize);
 	}
 
+	/**
+	 * 
+	 */
 	public void printState() {
 		String placeHolder;
 		for (int row = 0; row < this.grid.length; row++) {
@@ -82,6 +121,10 @@ public class TicTacToe {
 		}
 	}
 
+	/**
+	 * @param row
+	 * @return
+	 */
 	private boolean isRowSame(int row) {
 		boolean isRowSame = this.grid[row][0] != null;
 		for (int column = 0; column < this.gridSize - 1; column++) {
@@ -93,6 +136,10 @@ public class TicTacToe {
 		return isRowSame;
 	}
 
+	/**
+	 * @param column
+	 * @return
+	 */
 	private boolean isColumnSame(int column) {
 		boolean isColumnSame = this.grid[0][column] != null;
 		for (int row = 0; row < this.gridSize - 1; row++) {
@@ -104,6 +151,9 @@ public class TicTacToe {
 		return isColumnSame;
 	}
 
+	/**
+	 * @return
+	 */
 	private boolean isLeftDiagonalSame() {
 		boolean isLeftDiagonalSame = this.grid[0][0] != null;
 		for (int i = 0; i < this.gridSize - 1; i++) {
@@ -115,6 +165,9 @@ public class TicTacToe {
 		return isLeftDiagonalSame;
 	}
 
+	/**
+	 * @return
+	 */
 	private boolean isRightDiagonalSame() {
 		boolean isRightDiagonalSame = this.grid[0][this.gridSize - 1] != null;
 		int column = this.gridSize - 1;
@@ -128,10 +181,16 @@ public class TicTacToe {
 		return isRightDiagonalSame;
 	}
 
+	/**
+	 * @return
+	 */
 	private boolean isAnyDiagonalSame() {
 		return this.isLeftDiagonalSame() || this.isRightDiagonalSame();
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isGameOver() {
 		boolean isGameOver = false;
 		for (int index = 0; index < this.gridSize; index++) {
@@ -146,6 +205,9 @@ public class TicTacToe {
 		return isGameOver;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isGameDraw() {
 		boolean isGameDraw = true;
 		if (isGameOver()) {
@@ -166,6 +228,10 @@ public class TicTacToe {
 		return isGameDraw;
 	}
 
+	/**
+	 * @param boxNum
+	 * @return
+	 */
 	private Coord2D convertBoxToIndex(int boxNum) {
 		int row = boxNum / this.gridSize;
 		int column = (boxNum % this.gridSize) - 1;
@@ -176,6 +242,10 @@ public class TicTacToe {
 		return new Coord2D(row, column);
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
 	private Coord2D getInputBoxNumber(Scanner in) {
 		System.out.println("Player " + this.currentPlayer.toString() + "'s turn...");
 		System.out.print("Choose box from 1 to " + this.gridSize * this.gridSize + ": ");
@@ -188,6 +258,10 @@ public class TicTacToe {
 		return convertBoxToIndex(playerChoice);
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
 	private int getInputRowIndex(Scanner in) {
 		System.out.print("Choose row number from 1 to " + this.gridSize + ": ");
 		int rowChoice = in.nextInt();
@@ -199,6 +273,10 @@ public class TicTacToe {
 		return rowChoice - 1;
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
 	private int getInputColumnIndex(Scanner in) {
 		System.out.print("Choose column number from 1 to " + this.gridSize + ": ");
 		int columnChoice = in.nextInt();
@@ -210,6 +288,10 @@ public class TicTacToe {
 		return columnChoice - 1;
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
 	private Coord2D getInputIndex(Scanner in) {
 		System.out.println("Player " + this.currentPlayer.toString() + "'s turn...");
 		int rowIndex = getInputRowIndex(in);
@@ -217,6 +299,10 @@ public class TicTacToe {
 		return new Coord2D(rowIndex, columnIndex);
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
 	private int getInputGridSize(Scanner in) {
 		System.out.print("Choose the grid size you want to play (>= 3): ");
 		int gridSize = in.nextInt();
@@ -228,6 +314,9 @@ public class TicTacToe {
 		return gridSize;
 	}
 
+	/**
+	 * @param in
+	 */
 	public void setGridSize(Scanner in) {
 		System.out.print("Do you want to play with the default grid size (3)? (Y/N): ");
 		String inputGridSize = in.next();
@@ -241,6 +330,9 @@ public class TicTacToe {
 		}
 	}
 
+	/**
+	 * @param in
+	 */
 	public void setInputMode(Scanner in) {
 		System.out.print("Do you want to input Box-wise or Index wise? (B/I): ");
 		String inputMode = in.next();
@@ -254,6 +346,10 @@ public class TicTacToe {
 		}
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 */
 	public Coord2D getPlayerInput(Scanner in) {
 		Coord2D playerInput;
 		if (this.isInputBoxWise) {
@@ -264,6 +360,9 @@ public class TicTacToe {
 		return playerInput;
 	}
 
+	/**
+	 * 
+	 */
 	public void toggleCurrentPlayer() {
 		if (this.currentPlayer == Player.X) {
 			this.currentPlayer = Player.O;
@@ -272,6 +371,10 @@ public class TicTacToe {
 		}
 	}
 
+	/**
+	 * @param coordinate
+	 * @param in
+	 */
 	public void processInput(Coord2D coordinate, Scanner in) {
 		if (this.grid[coordinate.getRow()][coordinate.getColumn()] == null) {
 			this.grid[coordinate.getRow()][coordinate.getColumn()] = this.currentPlayer;
@@ -282,6 +385,9 @@ public class TicTacToe {
 		}
 	}
 
+	/**
+	 * @param in
+	 */
 	public void start(Scanner in) {
 		System.out.println("Welcome to Tic-Tac-Toe!\n");
 		System.out.println("First player gets X, Second player gets O.");
@@ -305,6 +411,9 @@ public class TicTacToe {
 		System.exit(0);
 	}
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		TicTacToe game = new TicTacToe();
