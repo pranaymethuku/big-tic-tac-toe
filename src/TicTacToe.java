@@ -10,11 +10,11 @@ public class TicTacToe {
 	private enum Player {
 		X, O;
 	}
-	
+
 	private class Coord2D {
 		private int row;
 		private int column;
-		
+
 		private Coord2D(int row, int column) {
 			this.setRow(row);
 			this.setColumn(column);
@@ -28,7 +28,8 @@ public class TicTacToe {
 		}
 
 		/**
-		 * @param row the row to set
+		 * @param row
+		 *            the row to set
 		 */
 		public void setRow(int row) {
 			this.row = row;
@@ -42,23 +43,22 @@ public class TicTacToe {
 		}
 
 		/**
-		 * @param column the column to set
+		 * @param column
+		 *            the column to set
 		 */
 		public void setColumn(int column) {
 			this.column = column;
 		}
-		
-		
+
 	}
 
 	private Player[][] grid;
-	
+
 	private void initNewGame(int gridSize) {
 		this.grid = new Player[gridSize][gridSize];
 		this.gridSize = gridSize;
 		this.currentPlayer = Player.X;
 	}
-		
 
 	public TicTacToe() {
 		initNewGame(DEFAULT_GRID_SIZE);
@@ -104,26 +104,33 @@ public class TicTacToe {
 		return isColumnSame;
 	}
 
-	private boolean isAnyDiagonalSame() {
-		boolean isAnyDiagonalSame = this.grid[0][0] != null;
+	private boolean isLeftDiagonalSame() {
+		boolean isLeftDiagonalSame = this.grid[0][0] != null;
 		for (int i = 0; i < this.gridSize - 1; i++) {
-			isAnyDiagonalSame &= this.grid[i][i] == this.grid[i + 1][i + 1];
-			if (!isAnyDiagonalSame) {
+			isLeftDiagonalSame &= this.grid[i][i] == this.grid[i + 1][i + 1];
+			if (!isLeftDiagonalSame) {
 				break;
 			}
 		}
-		//TODO: Fix diagonal wins malfunction
-		if (!isAnyDiagonalSame) {
-			isAnyDiagonalSame = this.grid[0][this.gridSize - 1] != null;
-			for (int row = 0; row < this.gridSize - 1; row++) {
-				for (int column = this.gridSize - 1; column > 0; column--)
-				isAnyDiagonalSame &= this.grid[row][column] == this.grid[row + 1][column - 1];
-				if (!isAnyDiagonalSame) {
-					break;
-				}
+		return isLeftDiagonalSame;
+	}
+
+	private boolean isRightDiagonalSame() {
+		boolean isRightDiagonalSame = this.grid[0][this.gridSize - 1] != null;
+		int column = this.gridSize - 1;
+		for (int row = 0; row < this.gridSize - 1; row++) {
+			isRightDiagonalSame &= this.grid[row][column] == this.grid[row + 1][column - 1];
+			column--;
+			if (!isRightDiagonalSame) {
+				break;
 			}
 		}
-		return isAnyDiagonalSame;
+		return isRightDiagonalSame;
+	}
+
+	private boolean isAnyDiagonalSame() {
+		// TODO: Fix this method. isRightDiagonalSame not working
+		return this.isLeftDiagonalSame() || this.isRightDiagonalSame();
 	}
 
 	public boolean isGameOver() {
@@ -139,14 +146,14 @@ public class TicTacToe {
 		}
 		return isGameOver;
 	}
-	
+
 	public boolean isGameDraw() {
 		boolean isGameDraw = true;
 		if (isGameOver()) {
 			return false;
 		} else {
-			for (int row =0; row<this.gridSize; row++) {
-				for (int column=0; column<this.gridSize; column++) {
+			for (int row = 0; row < this.gridSize; row++) {
+				for (int column = 0; column < this.gridSize; column++) {
 					isGameDraw &= this.grid[row][column] != null;
 					if (!isGameDraw) {
 						break;
@@ -159,58 +166,58 @@ public class TicTacToe {
 		}
 		return isGameDraw;
 	}
-	
+
 	private Coord2D convertBoxToIndex(int boxNum) {
-		int row = boxNum/this.gridSize;
+		int row = boxNum / this.gridSize;
 		int column = (boxNum % this.gridSize) - 1;
 		if (column == -1) {
 			column += this.gridSize;
-			row -= 1; 
+			row -= 1;
 		}
 		return new Coord2D(row, column);
 	}
-	
+
 	private Coord2D getInputBoxNumber(Scanner in) {
-		System.out.println("Player "+this.currentPlayer.toString()+"'s turn...");
-		System.out.print("Choose box from 1 to "+this.gridSize*this.gridSize+": ");
+		System.out.println("Player " + this.currentPlayer.toString() + "'s turn...");
+		System.out.print("Choose box from 1 to " + this.gridSize * this.gridSize + ": ");
 		int playerChoice = in.nextInt();
 		while (playerChoice < 1 && playerChoice > this.gridSize * this.gridSize) {
 			System.out.println("ERROR: Invalid box!");
-			System.err.print("Choose box from 1 to "+this.gridSize*this.gridSize+": ");
+			System.err.print("Choose box from 1 to " + this.gridSize * this.gridSize + ": ");
 			playerChoice = in.nextInt();
 		}
 		return convertBoxToIndex(playerChoice);
 	}
-	
+
 	private int getInputRowIndex(Scanner in) {
-		System.out.print("Choose row number from 1 to "+this.gridSize+": ");
+		System.out.print("Choose row number from 1 to " + this.gridSize + ": ");
 		int rowChoice = in.nextInt();
 		while (rowChoice < 1 && rowChoice > this.gridSize) {
 			System.err.println("ERROR: Invalid row!");
-			System.out.print("Choose row number from 1 to "+this.gridSize+": ");
+			System.out.print("Choose row number from 1 to " + this.gridSize + ": ");
 			rowChoice = in.nextInt();
 		}
 		return rowChoice - 1;
 	}
-	
+
 	private int getInputColumnIndex(Scanner in) {
-		System.out.print("Choose column number from 1 to "+this.gridSize+": ");
+		System.out.print("Choose column number from 1 to " + this.gridSize + ": ");
 		int columnChoice = in.nextInt();
 		while (columnChoice < 1 && columnChoice > this.gridSize) {
 			System.err.println("ERROR: Invalid column!");
-			System.out.print("Choose column number from 1 to "+this.gridSize+": ");
+			System.out.print("Choose column number from 1 to " + this.gridSize + ": ");
 			columnChoice = in.nextInt();
 		}
 		return columnChoice - 1;
 	}
-	
+
 	private Coord2D getInputIndex(Scanner in) {
-		System.out.println("Player "+this.currentPlayer.toString()+"'s turn...");
+		System.out.println("Player " + this.currentPlayer.toString() + "'s turn...");
 		int rowIndex = getInputRowIndex(in);
 		int columnIndex = getInputColumnIndex(in);
 		return new Coord2D(rowIndex, columnIndex);
 	}
-	
+
 	private int getInputGridSize(Scanner in) {
 		System.out.print("Choose the grid size you want to play (>= 3): ");
 		int gridSize = in.nextInt();
@@ -221,33 +228,33 @@ public class TicTacToe {
 		}
 		return gridSize;
 	}
-	
+
 	public void setGridSize(Scanner in) {
 		System.out.print("Do you want to play with the default grid size (3)? (Y/N): ");
 		String inputGridSize = in.next();
 		if (inputGridSize.equals("Y")) {
-			this.initNewGame(DEFAULT_GRID_SIZE); 
+			this.initNewGame(DEFAULT_GRID_SIZE);
 		} else if (inputGridSize.equals("N")) {
-			this.initNewGame(getInputGridSize(in)); 
+			this.initNewGame(getInputGridSize(in));
 		} else {
 			System.err.println("ERROR: Enter only Y or N");
 			setGridSize(in);
 		}
 	}
-	
+
 	public void setInputMode(Scanner in) {
 		System.out.print("Do you want to input Box-wise or Index wise? (B/I): ");
 		String inputMode = in.next();
 		if (inputMode.equals("B")) {
-			this.isInputBoxWise = true; 
+			this.isInputBoxWise = true;
 		} else if (inputMode.equals("I")) {
-			this.isInputBoxWise = false; 
+			this.isInputBoxWise = false;
 		} else {
 			System.err.println("ERROR: Enter only B or I");
 			setInputMode(in);
 		}
 	}
-	
+
 	public Coord2D getPlayerInput(Scanner in) {
 		Coord2D playerInput;
 		if (this.isInputBoxWise) {
@@ -257,7 +264,7 @@ public class TicTacToe {
 		}
 		return playerInput;
 	}
-	
+
 	public void toggleCurrentPlayer() {
 		if (this.currentPlayer == Player.X) {
 			this.currentPlayer = Player.O;
@@ -265,7 +272,7 @@ public class TicTacToe {
 			this.currentPlayer = Player.X;
 		}
 	}
-	
+
 	public void processInput(Coord2D coordinate, Scanner in) {
 		if (this.grid[coordinate.getRow()][coordinate.getColumn()] == null) {
 			this.grid[coordinate.getRow()][coordinate.getColumn()] = this.currentPlayer;
@@ -275,12 +282,13 @@ public class TicTacToe {
 			this.processInput(this.getPlayerInput(in), in);
 		}
 	}
-	
+
 	public void start(Scanner in) {
 		System.out.println("Welcome to Tic-Tac-Toe!\n");
 		System.out.println("First player gets X, Second player gets O.");
 		this.setGridSize(in);
 		this.setInputMode(in);
+		this.printState();
 		boolean isGameOver = this.isGameOver();
 		boolean isGameDraw = this.isGameDraw();
 		while (!isGameOver && !isGameDraw) {
@@ -293,8 +301,9 @@ public class TicTacToe {
 		if (isGameDraw) {
 			System.out.println("GAME DRAW!");
 		} else {
-			System.out.println("GAME OVER! Player "+this.currentPlayer.toString()+" wins!");
+			System.out.println("GAME OVER! Player " + this.currentPlayer.toString() + " wins!");
 		}
+		System.exit(0);
 	}
 
 	public static void main(String[] args) {
