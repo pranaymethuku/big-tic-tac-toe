@@ -320,9 +320,9 @@ public class TicTacToe {
 	public void setGridSize(Scanner in) {
 		System.out.print("Do you want to play with the default grid size (3)? (Y/N): ");
 		String inputGridSize = in.next();
-		if (inputGridSize.equals("Y")) {
+		if (inputGridSize.equals("Y") || inputGridSize.equals("y")) {
 			this.initNewGame(DEFAULT_GRID_SIZE);
-		} else if (inputGridSize.equals("N")) {
+		} else if (inputGridSize.equals("N") || inputGridSize.equals("n")) {
 			this.initNewGame(getInputGridSize(in));
 		} else {
 			System.err.println("ERROR: Enter only Y or N");
@@ -336,9 +336,9 @@ public class TicTacToe {
 	public void setInputMode(Scanner in) {
 		System.out.print("Do you want to input Box-wise or Index wise? (B/I): ");
 		String inputMode = in.next();
-		if (inputMode.equals("B")) {
+		if (inputMode.equals("B") || inputMode.equals("b")) {
 			this.isInputBoxWise = true;
-		} else if (inputMode.equals("I")) {
+		} else if (inputMode.equals("I") || inputMode.equals("i")) {
 			this.isInputBoxWise = false;
 		} else {
 			System.err.println("ERROR: Enter only B or I");
