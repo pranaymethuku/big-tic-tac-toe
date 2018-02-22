@@ -17,6 +17,18 @@ public class TicTacToe {
 	/**
 	 * 
 	 */
+	private boolean isGameOver;
+	/**
+	 * 
+	 */
+	private boolean isGameDraw;
+	/**
+	 * 
+	 */
+	private int numOfTurns;
+	/**
+	 * 
+	 */
 	private static final int DEFAULT_GRID_SIZE = 3;
 	/**
 	 * 
@@ -88,6 +100,9 @@ public class TicTacToe {
 		this.grid = new Player[gridSize][gridSize];
 		this.gridSize = gridSize;
 		this.currentPlayer = Player.X;
+		this.isGameOver  = false;
+		this.isGameDraw = false;
+		this.numOfTurns = 0;
 	}
 
 	/**
@@ -191,41 +206,15 @@ public class TicTacToe {
 	/**
 	 * @return
 	 */
-	public boolean isGameOver() {
-		boolean isGameOver = false;
-		for (int index = 0; index < this.gridSize; index++) {
-			isGameOver |= this.isRowSame(index) || this.isColumnSame(index);
-			if (isGameOver) {
-				break;
-			}
-		}
-		if (!isGameOver) {
-			isGameOver |= this.isAnyDiagonalSame();
-		}
-		return isGameOver;
+	private void toggleGameOver(Coord2D lastTurn) {
+		this.isGameOver |= this.isRowSame(lastTurn.getRow()) || this.isColumnSame(lastTurn.getColumn()) || this.isAnyDiagonalSame();
 	}
 
 	/**
 	 * @return
 	 */
-	public boolean isGameDraw() {
-		boolean isGameDraw = true;
-		if (isGameOver()) {
-			return false;
-		} else {
-			for (int row = 0; row < this.gridSize; row++) {
-				for (int column = 0; column < this.gridSize; column++) {
-					isGameDraw &= this.grid[row][column] != null;
-					if (!isGameDraw) {
-						break;
-					}
-				}
-				if (!isGameDraw) {
-					break;
-				}
-			}
-		}
-		return isGameDraw;
+	private void toggleGameDraw() {
+		this.isGameDraw |=  (this.numOfTurns == this.gridSize * this.gridSize);
 	}
 
 	/**
@@ -375,13 +364,16 @@ public class TicTacToe {
 	 * @param coordinate
 	 * @param in
 	 */
-	public void processInput(Coord2D coordinate, Scanner in) {
+	public void completeTurn(Coord2D coordinate, Scanner in) {
 		if (this.grid[coordinate.getRow()][coordinate.getColumn()] == null) {
 			this.grid[coordinate.getRow()][coordinate.getColumn()] = this.currentPlayer;
+			this.numOfTurns++;
+			this.toggleGameOver(coordinate);
+			this.toggleGameDraw();
 			this.toggleCurrentPlayer();
 		} else {
 			System.err.println("ERROR: Cannot overwrite on other player's mark!");
-			this.processInput(this.getPlayerInput(in), in);
+			this.completeTurn(this.getPlayerInput(in), in);
 		}
 	}
 
@@ -394,19 +386,15 @@ public class TicTacToe {
 		this.setGridSize(in);
 		this.setInputMode(in);
 		this.printState();
-		boolean isGameOver = this.isGameOver();
-		boolean isGameDraw = this.isGameDraw();
-		while (!isGameOver && !isGameDraw) {
-			this.processInput(this.getPlayerInput(in), in);
+		while (!this.isGameOver && !this.isGameDraw) {
+			this.completeTurn(this.getPlayerInput(in), in);
 			this.printState();
-			isGameOver = this.isGameOver();
-			isGameDraw = this.isGameDraw();
 		}
 		this.toggleCurrentPlayer();
-		if (isGameDraw) {
-			System.out.println("GAME DRAW!");
-		} else {
+		if (this.isGameOver) {
 			System.out.println("GAME OVER! Player " + this.currentPlayer.toString() + " wins!");
+		} else {
+			System.out.println("GAME DRAW!");
 		}
 		System.exit(0);
 	}
