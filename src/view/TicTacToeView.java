@@ -84,8 +84,9 @@ public class TicTacToeView implements ActionListener {
 	 * @param coord
 	 * @param text
 	 */
-	public void setGridItemText(Coord2D coord, String text) {
+	public void setGridItemView(Coord2D coord, String text, Color color) {
 		grid[coord.getRow()][coord.getColumn()].setText(text);
+		grid[coord.getRow()][coord.getColumn()].setBackground(color);
 	}
 	
 	/**
