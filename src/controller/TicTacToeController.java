@@ -1,6 +1,7 @@
 package controller;
 
 import model.TicTacToeModel;
+import model.TicTacToePlayer;
 import utilities.Coord2D;
 import view.TicTacToeView;
 
@@ -32,17 +33,17 @@ public class TicTacToeController {
 	/**
 	 * @param coord
 	 */
-	private void updateGridItemView (Coord2D coord) {
-		this.view.setGridItemText(coord, this.model.getCurrentPlayer().getName());
+	private void updateGridItemView (Coord2D coord, TicTacToePlayer player) {
+		this.view.setGridItemView(coord, player.getName(), player.getColor());
 	}
 
 	/**
 	 * @param coord
 	 */
 	public void processGridItemClickEvent(Coord2D coord) {
-		if (this.model.readGridItem(coord) == null) {
-			this.model.updateGridItem(coord);
-			updateGridItemView(coord);
+		if (this.model.getGridItem(coord) == null) {
+			TicTacToePlayer player = this.model.setGridItem(coord);
+			updateGridItemView(coord, player);
 			updateGameTerminationState(coord);
 			this.model.toggleCurrentPlayer();
 		}
