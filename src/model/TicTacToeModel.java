@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Color;
+
 import utilities.Coord2D;
 
 /**
@@ -8,6 +10,7 @@ import utilities.Coord2D;
  * @author Pranay Methuku
  * @since February 11, 2018
  * @updated August 18, 2018
+ * @updated September 15, 2018
  *
  */
 public class TicTacToeModel {
@@ -38,6 +41,11 @@ public class TicTacToeModel {
 	private int numOfTurns;
 	
 	/**
+	 * Matrix representation of the game.
+	 */
+	private TicTacToeGrid grid;
+	
+	/**
 	 * Stores current player information.
 	 */
 	private TicTacToePlayer currentPlayer;
@@ -57,40 +65,23 @@ public class TicTacToeModel {
 	}	
 
 	/**
-	 * Stores current player information.
+	 * Stores both players' information.
 	 */
-	private TicTacToePlayer otherPlayer;	
-
-	/**
-	 * @return the otherPlayer
-	 */
-	public TicTacToePlayer getOtherPlayer() {
-		return otherPlayer;
-	}
-
-	/**
-	 * @param otherPlayer the otherPlayer to set
-	 */
-	public void setOtherPlayer(TicTacToePlayer otherPlayer) {
-		this.otherPlayer = otherPlayer;
-	}
-
-	/**
-	 * Matrix representation of the game.
-	 */
-	private TicTacToePlayer[][] grid;
-
+	private TicTacToePlayer player1;
+	private TicTacToePlayer player2;
+	
 	/**
 	 * @param gridSize
 	 */
 	private void setupModel(int gridSize) {
-		this.grid = new TicTacToePlayer[gridSize][gridSize];
+		this.grid = new TicTacToeGrid(gridSize);
 		this.gridSize = gridSize;
-		this.currentPlayer = new TicTacToePlayer("X");
-		this.otherPlayer = new TicTacToePlayer("O");
+		this.player1 = new TicTacToePlayer("X", Color.CYAN);
+		this.player2 = new TicTacToePlayer("O", Color.LIGHT_GRAY);
+		this.currentPlayer = this.player1;
 		this.isGameOver  = false;
 		this.isGameDraw = false;
-		this.numOfTurns = 0;
+		this.numOfTurns = 0;		
 	}
 
 	/**
@@ -110,18 +101,19 @@ public class TicTacToeModel {
 	
 	/**
 	 * @param gridItem
+	 * @return
 	 */
-	public void updateGridItem (Coord2D gridItem) {
-		this.grid[gridItem.getRow()][gridItem.getColumn()] = this.currentPlayer;
-		this.numOfTurns++;
+	public TicTacToePlayer getGridItem (Coord2D gridItem) {
+		return this.grid.getGridItem(gridItem);
 	}
 	
 	/**
 	 * @param gridItem
-	 * @return
 	 */
-	public TicTacToePlayer readGridItem (Coord2D gridItem) {
-		return this.grid[gridItem.getRow()][gridItem.getColumn()];
+	public TicTacToePlayer setGridItem (Coord2D gridItem) {
+		this.grid.setGridItem(gridItem, this.currentPlayer);
+		this.numOfTurns++;
+		return this.currentPlayer;
 	}
 
 	/**
@@ -129,14 +121,7 @@ public class TicTacToeModel {
 	 * @return
 	 */
 	private boolean isRowSame(int row) {
-		boolean isRowSame = this.grid[row][0] != null;
-		for (int column = 0; column < this.gridSize - 1; column++) {
-			isRowSame &= (this.grid[row][column] == this.grid[row][column + 1]);
-			if (!isRowSame) {
-				break;
-			}
-		}
-		return isRowSame;
+		return this.grid.getRow(row).isAxisIdentical();
 	}
 
 	/**
@@ -144,44 +129,21 @@ public class TicTacToeModel {
 	 * @return
 	 */
 	private boolean isColumnSame(int column) {
-		boolean isColumnSame = this.grid[0][column] != null;
-		for (int row = 0; row < this.gridSize - 1; row++) {
-			isColumnSame &= (this.grid[row][column] == this.grid[row + 1][column]);
-			if (!isColumnSame) {
-				break;
-			}
-		}
-		return isColumnSame;
+		return this.grid.getColumn(column).isAxisIdentical();
 	}
 
 	/**
 	 * @return
 	 */
 	private boolean isLeftDiagonalSame() {
-		boolean isLeftDiagonalSame = this.grid[0][0] != null;
-		for (int i = 0; i < this.gridSize - 1; i++) {
-			isLeftDiagonalSame &= this.grid[i][i] == this.grid[i + 1][i + 1];
-			if (!isLeftDiagonalSame) {
-				break;
-			}
-		}
-		return isLeftDiagonalSame;
+		return this.grid.getLeftDiagonal().isAxisIdentical();
 	}
 
 	/**
 	 * @return
 	 */
 	private boolean isRightDiagonalSame() {
-		boolean isRightDiagonalSame = this.grid[0][this.gridSize - 1] != null;
-		int column = this.gridSize - 1;
-		for (int row = 0; row < this.gridSize - 1; row++) {
-			isRightDiagonalSame &= this.grid[row][column] == this.grid[row + 1][column - 1];
-			column--;
-			if (!isRightDiagonalSame) {
-				break;
-			}
-		}
-		return isRightDiagonalSame;
+		return this.grid.getRightDiagonal().isAxisIdentical();
 	}
 
 	/**
@@ -195,7 +157,11 @@ public class TicTacToeModel {
 	 * @return
 	 */
 	public void updateGameOver(Coord2D lastTurn) {
-		this.isGameOver |= this.isRowSame(lastTurn.getRow()) || this.isColumnSame(lastTurn.getColumn()) || this.isAnyDiagonalSame();
+		this.isGameOver |= this.isRowSame(lastTurn.getRow()) || this.isColumnSame(lastTurn.getColumn());
+		if (!this.isGameOver && (lastTurn.getRow() == lastTurn.getColumn() || 
+				lastTurn.getRow() + lastTurn.getColumn() == this.gridSize - 1)) {
+			this.isGameOver |= this.isAnyDiagonalSame();
+		}
 	}
 
 	/**
@@ -209,9 +175,11 @@ public class TicTacToeModel {
 	 * 
 	 */
 	public void toggleCurrentPlayer() {
-		TicTacToePlayer temp = this.currentPlayer;
-		this.currentPlayer = this.otherPlayer;
-		this.otherPlayer = temp;
+		if (this.currentPlayer == this.player1) {
+			this.currentPlayer = this.player2;
+		} else {
+			this.currentPlayer = this.player1;
+		}
 	}
 	
 	/**
