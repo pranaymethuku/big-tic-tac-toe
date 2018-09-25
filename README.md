@@ -2,8 +2,8 @@
 A Model-View-Controller implementation of the Tic-Tac-Toe game.
 
 ## Key features
-Flexible grid size (theoretically infinite), without compromising performance.
-Uses dynamic programming concepts to ensure constant time termination state checks.
+* Flexible grid size (theoretically infinite), without compromising performance.
+* Uses dynamic programming concepts to ensure constant time termination state checks.
 
 ## Requirements
 For the program to run, you must have a recent Java Development Kit (JDK) on your machine.
