@@ -1,7 +1,7 @@
 package view;
 import javax.swing.*;
 
-import utilities.Coord2D;
+import util.Coord2D;
 
 public class GridItem extends JButton {
 

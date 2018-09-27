@@ -1,4 +1,4 @@
-package utilities;
+package util;
 
 /**
  * Tuple representation for 2D coordinates.

@@ -7,8 +7,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import controller.TicTacToeController;
+import util.Coord2D;
 import view.GridItem;
-import utilities.Coord2D;
 
 /**
  * @author Pranay Methuku
@@ -89,6 +89,11 @@ public class TicTacToeView implements ActionListener {
 		grid[coord.getRow()][coord.getColumn()].setBackground(color);
 	}
 	
+	
+	public void disableGridItem(Coord2D coord) {
+		grid[coord.getRow()][coord.getColumn()].setEnabled(false);
+	}
+	
 	/**
 	 * Set the main frame to be visible.
 	 */
@@ -97,7 +102,7 @@ public class TicTacToeView implements ActionListener {
 	}
 	
 	/**
-	 * 
+	 * Render the dialog for game termination with someone winning.
 	 */
 	public void renderGameOver(String playerName) {
 		JOptionPane.showMessageDialog(null, "GAME OVER! Player " + playerName + " wins!");
@@ -105,7 +110,7 @@ public class TicTacToeView implements ActionListener {
 	}
 	
 	/**
-	 * 
+	 * Render the dialog for game termination with a draw.
 	 */
 	public void renderGameDraw() {
 		JOptionPane.showMessageDialog(null, "GAME DRAW!");
