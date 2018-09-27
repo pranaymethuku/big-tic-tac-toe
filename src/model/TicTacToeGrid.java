@@ -1,21 +1,40 @@
 package model;
 
-import utilities.Coord2D;
+import util.Coord2D;
 
 public class TicTacToeGrid {
+		
+	/**
+	 * Grid size of the game.
+	 */
+	private int gridSize;
 	
-	private TicTacToePlayer[][] grid;
-	
+	/**
+	 * Rows in the grid.
+	 */
 	private TicTacToeAxis[] rows;
 	
+	/**
+	 * Columns in the grid.
+	 */
 	private TicTacToeAxis[] columns;
 	
+	/**
+	 * Diagonal from top left to bottom right.
+	 */
 	private TicTacToeAxis leftDiagonal;
 
+	/**
+	 * Diagonal from top right to bottom left.
+	 */
 	private TicTacToeAxis rightDiagonal;
 	
+	/**
+	 * Constructor for TicTacToeGrid.
+	 * @param gridSize
+	 */
 	public TicTacToeGrid(int gridSize) {
-		this.grid = new TicTacToePlayer[gridSize][gridSize];
+		this.gridSize = gridSize;
 		this.rows = new TicTacToeAxis[gridSize];
 		this.columns = new TicTacToeAxis[gridSize];
 		this.leftDiagonal = new TicTacToeAxis(gridSize);
@@ -28,31 +47,21 @@ public class TicTacToeGrid {
 	
 	/**
 	 * @param gridItem
-	 * @return
-	 */
-	public TicTacToePlayer getGridItem (Coord2D gridItem) {
-		return this.grid[gridItem.getRow()][gridItem.getColumn()];
-	}
-	
-	/**
-	 * @param gridItem
-	 * @return
 	 */
 	public void setGridItem (Coord2D gridItem, TicTacToePlayer player) {
-		this.grid[gridItem.getRow()][gridItem.getColumn()] = player;
 		this.getRow(gridItem.getRow()).incrementPlayerMarking(player);
 		this.getColumn(gridItem.getColumn()).incrementPlayerMarking(player);
 		if (gridItem.getRow() == gridItem.getColumn()) {
 			this.getLeftDiagonal().incrementPlayerMarking(player);
 		}
-		if (gridItem.getRow() + gridItem.getColumn() == this.grid.length - 1) {
+		if (gridItem.getRow() + gridItem.getColumn() == this.gridSize - 1) {
 			this.getRightDiagonal().incrementPlayerMarking(player);
 		}
 	}
 	
 	/**
 	 * @param gridItem
-	 * @return
+	 * @return Row object at index {@code row}
 	 */
 	public TicTacToeAxis getRow (int row) {
 		return this.rows[row];
@@ -60,7 +69,7 @@ public class TicTacToeGrid {
 	
 	/**
 	 * @param gridItem
-	 * @return
+	 * @return Column object at index {@code column}
 	 */
 	public TicTacToeAxis getColumn (int column) {
 		return this.columns[column];
@@ -68,7 +77,7 @@ public class TicTacToeGrid {
 	
 	/**
 	 * @param gridItem
-	 * @return
+	 * @return left diagonal object of grid.
 	 */
 	public TicTacToeAxis getLeftDiagonal () {
 		return this.leftDiagonal;
@@ -76,7 +85,7 @@ public class TicTacToeGrid {
 	
 	/**
 	 * @param gridItem
-	 * @return
+	 * @return right diagonal object of grid.
 	 */
 	public TicTacToeAxis getRightDiagonal () {
 		return this.rightDiagonal;

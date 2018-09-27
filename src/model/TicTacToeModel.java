@@ -2,7 +2,7 @@ package model;
 
 import java.awt.Color;
 
-import utilities.Coord2D;
+import util.Coord2D;
 
 /**
  * Classic Tic-Tac-Toe game with dynamic functionalities,
@@ -11,6 +11,7 @@ import utilities.Coord2D;
  * @since February 11, 2018
  * @updated August 18, 2018
  * @updated September 15, 2018
+ * @updated September 24, 2018
  *
  */
 public class TicTacToeModel {
@@ -101,14 +102,7 @@ public class TicTacToeModel {
 	
 	/**
 	 * @param gridItem
-	 * @return
-	 */
-	public TicTacToePlayer getGridItem (Coord2D gridItem) {
-		return this.grid.getGridItem(gridItem);
-	}
-	
-	/**
-	 * @param gridItem
+	 * @return the current player object for that turn
 	 */
 	public TicTacToePlayer setGridItem (Coord2D gridItem) {
 		this.grid.setGridItem(gridItem, this.currentPlayer);
@@ -118,7 +112,8 @@ public class TicTacToeModel {
 
 	/**
 	 * @param row
-	 * @return
+	 * @return whether row with index {@code row} is completely
+	 * 	populated with all same players
 	 */
 	private boolean isRowSame(int row) {
 		return this.grid.getRow(row).isAxisIdentical();
@@ -126,35 +121,39 @@ public class TicTacToeModel {
 
 	/**
 	 * @param column
-	 * @return
+	 * @return whether column with index {@code column} is completely
+	 * 	populated with all same players
 	 */
 	private boolean isColumnSame(int column) {
 		return this.grid.getColumn(column).isAxisIdentical();
 	}
 
 	/**
-	 * @return
+	 * @return whether diagonal going from top left 
+	 * 	to bottom right is completely populated with all same players
 	 */
 	private boolean isLeftDiagonalSame() {
 		return this.grid.getLeftDiagonal().isAxisIdentical();
 	}
 
 	/**
-	 * @return
+	 * @return whether diagonal going from top right 
+	 * 	to bottom left is completely populated with all same players
 	 */
 	private boolean isRightDiagonalSame() {
 		return this.grid.getRightDiagonal().isAxisIdentical();
 	}
 
 	/**
-	 * @return
+	 * @return whether either diagonal is completely populated with
+	 * 	all same players
 	 */
 	private boolean isAnyDiagonalSame() {
 		return this.isLeftDiagonalSame() || this.isRightDiagonalSame();
 	}
 
 	/**
-	 * @return
+	 * Updates the game termination state after last turn is completed and someone wins.
 	 */
 	public void updateGameOver(Coord2D lastTurn) {
 		this.isGameOver |= this.isRowSame(lastTurn.getRow()) || this.isColumnSame(lastTurn.getColumn());
@@ -165,14 +164,14 @@ public class TicTacToeModel {
 	}
 
 	/**
-	 * @return
+	 * Updates the game termination state after last turn is completed and its a draw.
 	 */
 	public void updateGameDraw() {
 		this.isGameDraw |=  (this.numOfTurns == this.gridSize * this.gridSize);
 	}
 
 	/**
-	 * 
+	 * Switches players after each turn.
 	 */
 	public void toggleCurrentPlayer() {
 		if (this.currentPlayer == this.player1) {
@@ -183,14 +182,14 @@ public class TicTacToeModel {
 	}
 	
 	/**
-	 * @return
+	 * @return whether game is over and someone has won.
 	 */
 	public boolean isGameOver() {
 		return this.isGameOver;
 	}
 	
 	/**
-	 * @return
+	 * @return whether game is over and it is a draw.
 	 */
 	public boolean isGameDraw() {
 		return this.isGameDraw;
