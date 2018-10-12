@@ -19,7 +19,7 @@ public class TicTacToePlayer {
 	private Color color;
 
 	/**
-	 * @return the color
+	 * @return the color of the player
 	 */
 	public Color getColor() {
 		return color;
