@@ -1,3 +1,6 @@
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import controller.TicTacToeController;
 import model.TicTacToeModel;
 import view.TicTacToeView;
@@ -29,12 +32,26 @@ public final class TicTacToe {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int gridSize = 3;
-		TicTacToeModel model = new TicTacToeModel(gridSize);
-		TicTacToeView view = new TicTacToeView(gridSize);
-		TicTacToeController controller = new TicTacToeController(model, view);
 		
-		view.registerController(controller);
+		JFrame frame = new JFrame("Tic Tac Toe input");
+	    // prompt the user to enter the grid size
+	    String gridSizeStr = JOptionPane.showInputDialog(
+		    frame, 
+	        "What grid size do you wanna play with? Enter an integer", 
+	        "Tic Tac Toe input", 
+	        JOptionPane.QUESTION_MESSAGE
+        );
+	    
+	    try {
+	    	int gridSize = Integer.parseInt(gridSizeStr);
+	    	TicTacToeModel model = new TicTacToeModel(gridSize);
+			TicTacToeView view = new TicTacToeView(gridSize);
+			TicTacToeController controller = new TicTacToeController(model, view);
+			
+			view.registerController(controller);
+	    } catch (NumberFormatException e) {
+	    	JOptionPane.showMessageDialog(frame, "Value must be an integer!", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 
 }
