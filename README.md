@@ -1,6 +1,8 @@
 # Big-Tic-Tac-Toe
 A Model-View-Controller implementation of the Tic-Tac-Toe game, created to optimize the heck out of it.
 
+![BigTicTacToe Screenshot](https://github.com/pranaymethuku/big-tic-tac-toe/blob/master/app_screenshot.png)
+
 ## Key features
 * Flexible grid size (theoretically infinite), without compromising performance.
 * Uses dynamic programming concepts to ensure constant time termination state checks.
