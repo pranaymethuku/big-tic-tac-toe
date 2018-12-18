@@ -77,7 +77,7 @@ public class TicTacToeModel {
 	private void setupModel(int gridSize) {
 		this.grid = new TicTacToeGrid(gridSize);
 		this.gridSize = gridSize;
-		this.player1 = new TicTacToePlayer("X", Color.CYAN);
+		this.player1 = new TicTacToePlayer("X", new Color(95, 95, 95));
 		this.player2 = new TicTacToePlayer("O", Color.LIGHT_GRAY);
 		this.currentPlayer = this.player1;
 		this.isGameOver  = false;
