@@ -1,5 +1,5 @@
 # Big-Tic-Tac-Toe
-A Model-View-Controller implementation of the Tic-Tac-Toe game.
+A Model-View-Controller implementation of the Tic-Tac-Toe game, created to optimize the heck out of it.
 
 ## Key features
 * Flexible grid size (theoretically infinite), without compromising performance.
