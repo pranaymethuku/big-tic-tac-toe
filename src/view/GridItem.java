@@ -1,6 +1,8 @@
 package view;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
 import javax.swing.*;
-
 import util.Coord2D;
 
 public class GridItem extends JButton {
@@ -23,7 +25,10 @@ public class GridItem extends JButton {
 	 */
 	public GridItem(String itemText, Coord2D coord) {
 		super(itemText);
+		this.setFont(new Font("Serif",Font.BOLD,30));
+		this.setBackground(new Color(40, 40, 40));
 		this.setPos(coord);
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	/**
