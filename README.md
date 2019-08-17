@@ -12,6 +12,4 @@ For the program to run, you must have a recent Java Development Kit (JDK) on you
 
 ## How to run
 
-~~Since this project was developed on the Eclipse IDE, it is recommended to clone and import this project via Eclipse for best results.~~
-
-_Todo:_ Create a makefile for the whole project, encorporating generating class files for every source file.
+Once you have cloned the repo, navigate into the root directory, and run `make` on the terminal, followed by `java -cp bin/ TicTacToe`.
