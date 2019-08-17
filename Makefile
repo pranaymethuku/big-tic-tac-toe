@@ -2,8 +2,10 @@
 JC = javac
 # target directory
 OUTDIR = bin/
+# source directory
+SRCDIR = src/
 # compilation flags
-JFLAGS = -g -d $(OUTDIR) -cp src/
+JFLAGS = -g -d $(OUTDIR) -cp $(SRCDIR)/
 
 .SUFFIXES: .java .class
 .java.class:
